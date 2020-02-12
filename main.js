@@ -84,16 +84,16 @@ function createGame() {
 function handleClick(event, row, column) {
 	let value = event.target.innerHTML;
 	let target = event.target;
-	target.innerHTML = '';
+	// target.innerHTML = '';
 
-	setTimeout(() => {
-		const randomElem = getRandomInt(4);
-		target.innerHTML = randomElem;
-		playZone[row][column] = randomElem;
-		console.log(playZone)
-	}, 1000);
+	// setTimeout(() => {
+	// 	const randomElem = getRandomInt(4);
+	// 	target.innerHTML = randomElem;
+	// 	playZone[row][column] = randomElem;
+	// 	console.log(playZone)
+	// }, 1000);
 
-	// checkSameElements(value, row, column)
+	checkSameElements(value, row, column)
 	
 	
 	// console.log(event.target.innerHTML);
@@ -102,8 +102,23 @@ function handleClick(event, row, column) {
 }
 
 function checkSameElements(value, row, column) {
-	for (let i in playZone) {
-		
+	let sameElemsArray = [];
+	let matrix6 = Number(column) + 1;
+
+	// console.log(typeof(column))
+
+	// console.log(playZone[row][matrix6])
+
+	if (playZone[row][matrix6] && playZone[row][matrix6] === value) { // right to entry
+		console.log(true)
+	} else if (playZone[row][Number(column)-1] && playZone[row][Number(column)-1] === value) { // left to entry
+		console.log(true)
+	} else if (playZone[Number(row-1)][column] && playZone[Number(row-1)][column] === value) { // down to entry
+		console.log(true)
+	} else if (playZone[Number(row+1)][column] !== undefined && playZone[Number(row+1)][column] === value) {
+		console.log(true)
+	} else {
+		console.log(false)
 	}
 }
 

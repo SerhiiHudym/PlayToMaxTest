@@ -3,6 +3,14 @@
     padding: 0;
 }
 
+#header {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    /* width: 50%; */
+}
+
 #game {
     display: flex;
     justify-content: center;
