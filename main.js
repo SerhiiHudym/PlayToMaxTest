@@ -79,6 +79,8 @@ function createGame() {
 		table.appendChild(tr);
 	}
 
+	table.classList.add('bordered');
+
 }
 
 function handleClick(event, row, column) {
@@ -101,24 +103,86 @@ function handleClick(event, row, column) {
 	// console.log(row, column);
 }
 
+let sameElemsArray = [];
 function checkSameElements(value, row, column) {
-	let sameElemsArray = [];
-	let matrix6 = Number(column) + 1;
+	// let sameElemsArray = [];
+	// let matrix6 = Number(column) + 1;
+
+	row = Number(row);
+	column = Number(column);	
+	sameElemsArray.push([row, column]);
+	let sameSet = new Set(sameElemsArray);
+	sameElemsArray = Array.from(sameSet);
 
 	// console.log(typeof(column))
 
 	// console.log(playZone[row][matrix6])
 
-	if (playZone[row][matrix6] && playZone[row][matrix6] === value) { // right to entry
-		console.log(true)
-	} else if (playZone[row][Number(column)-1] && playZone[row][Number(column)-1] === value) { // left to entry
-		console.log(true)
-	} else if (playZone[Number(row-1)][column] && playZone[Number(row-1)][column] === value) { // down to entry
-		console.log(true)
-	} else if (playZone[Number(row+1)][column] !== undefined && playZone[Number(row+1)][column] === value) {
-		console.log(true)
+	// console.log(typeof(row));
+	// console.log(typeof(column))
+	
+	// if (sameElemsArray.indexOf([row, column]) === -1) {
+
+	// } else {
+		
+	// }
+	
+
+	// right to entry
+	if (/*playZone[row][column+1] !==undefined && */playZone[row][column+1] === value) {
+		console.log('right')
+		// sameElemsArray.push([row, column])
+		sameElemsArray.push([row, column+1])
+		// checkSameElements(value, row, column+1)
+	
 	} else {
-		console.log(false)
+		console.log('row / column is undefined or element is not the same')
+	}
+
+	// left to entry
+	if (playZone[row] !== undefined && playZone[row][column-1] === value) {
+		// console.log(true)
+		console.log('left')
+
+		// sameElemsArray.push([row, column])
+		sameElemsArray.push([row, column-1]);
+		// checkSameElements(value, row, column-1);
+	} else {
+		console.log('row / column is undefined or element is not the same')
+	}
+
+	// up to entry
+	if (playZone[row-1] !== undefined && playZone[row-1][column] === value) {
+		// console.log(true)
+		console.log('up')
+
+		// sameElemsArray.push([row, column])
+		sameElemsArray.push([row-1, column]);
+		// checkSameElements(value, row-1, column);
+	
+	} else {
+		console.log('row / column is undefined or element is not the same')
+	}
+
+	// down to entry
+	if (/*playZone[row+1][column] !== undefined && */playZone[row+1][column] === value) {
+		// console.log(true)
+		console.log('down')
+		// sameElemsArray.push([row, column])
+		sameElemsArray.push([row+1, column]);
+		// checkSameElements(value, row+1, column);
+	
+	} else {
+		console.log('row / column is undefined or element is not the same')
+	}
+	console.log(sameElemsArray)
+
+	for (let i in sameElemsArray) {
+		console.log(sameElemsArray[i])
+		// console.log(sameElemsArray[i][0])
+		let elemToDelete = document.querySelector(`.row-${sameElemsArray[i][0]}.col-${sameElemsArray[i][1]}`).innerHTML = '';
+		// elemToDelete.innerHTML = '';
+		// console.log(elemToDelete)
 	}
 }
 
