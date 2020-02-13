@@ -1,75 +1,40 @@
-// Можно сделать поиск элементов в массиве через
-// добавление классов с номером строки и колонки. 
-// Это если делать консольный вариант
-
-/*
-	Но поскольку работа в браузере, но не вижу смысла не читать блоки DOMа.
-*/
-
-
-let game = document.querySelector('#game');
-let table = document.createElement('table');
-// let tr = document.createElement('tr');
-// let td = document.createElement('td');
-const elements = ['♣', '♥', '♦', '♠'];
-let rowsNumberInput = document.querySelector('#rowsNumber');
-let columnsNumberInput = document.querySelector('#columnsNumber');
-let createButton = document.querySelector('#createButton');
-
-let rowsNum,
+let game = document.querySelector('#game'),
+	table = document.createElement('table'),
+	rowsNumberInput = document.querySelector('#rowsNumber'),
+	columnsNumberInput = document.querySelector('#columnsNumber'),
+	createButton = document.querySelector('#createButton'),
+	rowsNum,
 	colNum,
-	// rows = [];
-	playZone = [];
+	playZone = [],
+	row = [];
 
-let row = []
+const elements = ['♣', '♥', '♦', '♠'];
 
 createButton.addEventListener('click', () => {
 	rowsNum = rowsNumberInput.value;
 	columnsNum = columnsNumberInput.value;
-	// rows = [];
-
-	// for (let i = 0; i < columnsNum; i++) {
-	// 	rows[i] = getRandomInt(4);
-	// }
-	// for (let i in columnsNum) {
-	// 	let symbolsInRow = [];
-
-	// 	for (let j = 0; j < rowsNum; j++) {
-	// 		symbolsInRow[j] = createColumns(columnsNum); // rows
-	// 		playZone[i] = symbolsInRow[j];
-	// 	}
-	// }
-
+	playZone = [];
 
 	for (let i = 0; i < rowsNum; i++) {
-		row = []; // for each row we create a new array
+		row = [];
 
 		for (let j = 0; j < columnsNum; j++) {
-			// row = [];
-			row[j] = getRandomInt(4); // for each td in row we create a random value
+			row[j] = getRandomElem(elements.length);
 		}
 		playZone[i] = row;
-		// row = []
 	}
 
-	console.log(playZone)
-	
-	// for (let i = 0; i < columnsNum; i++) {
-	// 	playZone[i].push(getRandomInt(4));
-	// }
-
-	// console.log(rows);
 	createGame();
 });
 
 function createGame() {
+	table.innerHTML = '';
 
-	console.log(playZone)
 	for (let i in playZone) {
 		let tr = document.createElement('tr');
 
 		for (let j in playZone[i]) {
-			let td = document.createElement('td')
+			let td = document.createElement('td');
 			td.innerHTML = playZone[i][j];
 			td.classList.add(`row-${i}`);
 			td.classList.add(`col-${j}`);
@@ -80,134 +45,44 @@ function createGame() {
 	}
 
 	table.classList.add('bordered');
-
 }
 
-function handleClick(event, row, column) {
-	let value = event.target.innerHTML;
-	let target = event.target;
-	// target.innerHTML = '';
+function handleClick(e) {
+	let target = e.target,
+		trNum = target.parentNode.rowIndex,
+		tdNum = target.cellIndex,
+		val = target.textContent;
 
-	// setTimeout(() => {
-	// 	const randomElem = getRandomInt(4);
-	// 	target.innerHTML = randomElem;
-	// 	playZone[row][column] = randomElem;
-	// 	console.log(playZone)
-	// }, 1000);
-
-	checkSameElements(value, row, column)
-	
-	
-	// console.log(event.target.innerHTML);
-	// console.log(elements.indexOf(event.target.innerHTML));
-	// console.log(row, column);
+	removeElem(val, trNum, tdNum);
 }
 
-let sameElemsArray = [];
-function checkSameElements(value, row, column) {
-	// let sameElemsArray = [];
-	// let matrix6 = Number(column) + 1;
+function removeElem(val, i, j) {
+	if (playZone[i] && playZone[i][j] && playZone[i][j] === val) {
+		playZone[i][j] = '';
 
-	row = Number(row);
-	column = Number(column);	
-	sameElemsArray.push([row, column]);
-	let sameSet = new Set(sameElemsArray);
-	sameElemsArray = Array.from(sameSet);
+		removeElem(val, i+1, j);
+		removeElem(val, i-1, j);
+		removeElem(val, i, j+1);
+		removeElem(val, i, j-1);
 
-	// console.log(typeof(column))
+		for (let i in playZone) {
+			for (let j in playZone[i]) {
+				if (playZone[i][j] === '') {
+					document.querySelector(`.row-${i}.col-${j}`).innerHTML = '';
 
-	// console.log(playZone[row][matrix6])
-
-	// console.log(typeof(row));
-	// console.log(typeof(column))
-	
-	// if (sameElemsArray.indexOf([row, column]) === -1) {
-
-	// } else {
-		
-	// }
-	
-
-	// right to entry
-	if (/*playZone[row][column+1] !==undefined && */playZone[row][column+1] === value) {
-		console.log('right')
-		// sameElemsArray.push([row, column])
-		sameElemsArray.push([row, column+1])
-		// checkSameElements(value, row, column+1)
-	
-	} else {
-		console.log('row / column is undefined or element is not the same')
-	}
-
-	// left to entry
-	if (playZone[row] !== undefined && playZone[row][column-1] === value) {
-		// console.log(true)
-		console.log('left')
-
-		// sameElemsArray.push([row, column])
-		sameElemsArray.push([row, column-1]);
-		// checkSameElements(value, row, column-1);
-	} else {
-		console.log('row / column is undefined or element is not the same')
-	}
-
-	// up to entry
-	if (playZone[row-1] !== undefined && playZone[row-1][column] === value) {
-		// console.log(true)
-		console.log('up')
-
-		// sameElemsArray.push([row, column])
-		sameElemsArray.push([row-1, column]);
-		// checkSameElements(value, row-1, column);
-	
-	} else {
-		console.log('row / column is undefined or element is not the same')
-	}
-
-	// down to entry
-	if (/*playZone[row+1][column] !== undefined && */playZone[row+1][column] === value) {
-		// console.log(true)
-		console.log('down')
-		// sameElemsArray.push([row, column])
-		sameElemsArray.push([row+1, column]);
-		// checkSameElements(value, row+1, column);
-	
-	} else {
-		console.log('row / column is undefined or element is not the same')
-	}
-	console.log(sameElemsArray)
-
-	for (let i in sameElemsArray) {
-		console.log(sameElemsArray[i])
-		// console.log(sameElemsArray[i][0])
-		let elemToDelete = document.querySelector(`.row-${sameElemsArray[i][0]}.col-${sameElemsArray[i][1]}`).innerHTML = '';
-		// elemToDelete.innerHTML = '';
-		// console.log(elemToDelete)
+					setTimeout(() => {
+						let rand = getRandomElem(elements.length)
+						document.querySelector(`.row-${i}.col-${j}`).innerHTML = rand;
+						playZone[i][j] = rand;
+					}, 1000)
+				}
+			}
+		}
 	}
 }
 
-function createColumns(num) {
-	for (let i = 0; i < num; i++) {
-		return getRandomInt(4);
-	}
-}
-
-function getRandomInt(max) {
+function getRandomElem(max) {
 	return elements[Math.floor(Math.random() * Math.floor(max))];
 }
 
 game.appendChild(table);
-/*
-
-<table>
-	<tr>
-		<td>...</td>
-	</tr>
-</table>
-
-*/
-
-// let div = document.createElement('div');
-// div.innerHTML = elements[0];
-
-// game.appendChild(div);

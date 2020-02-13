@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PlayToMax Test</title>
+    <title>Best game ever</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div class="wrapper">
     <div id="header">
-        <div style="display: flex;">
-            <p>Please choose number of rows for game:&nbsp;</p>
+        <div class="header-row">
+            <p>Number of rows:&nbsp;</p>
             <input type="number" id="rowsNumber">
         </div>
-        <div style="display: flex;">
-            <p>Please choose number of columns for game:&nbsp;</p>
+        <div class="header-row" style="display: flex;">
+            <p>Number of columns:&nbsp;</p>
             <input type="number" id="columnsNumber">
         </div>
         <div>
-            <button id="createButton">Create game</button>
+            <button id="createButton">Start new game</button>
         </div>
     </div>
-    
-    <div id="game"></div>
 
+    <div id="game"></div>
+    </div>
     <script src="main.js"></script>
 </body>
 </html>
